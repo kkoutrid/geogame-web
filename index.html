@@ -346,18 +346,30 @@ config = {
         canvas.emscripten {
             border: 0px none;
             background-color: transparent;
-            width: 100%;
-            height=100%;
             z-index: 5;
-
             padding: 0;
-            margin: 0 auto;
+
+            /* Preserve the game's native 1005x750 aspect ratio. pygbag's
+               window_resize() sets the canvas display size inline from
+               canvas.width/canvas.height, but that runs while the canvas is
+               still square during load and isn't corrected after the game does
+               set_mode((1005,750)) -- so the 4:3 render got squished into a
+               near-square box. These !important rules override pygbag's inline
+               width/height: auto sizing + max-*:100% + the aspect-ratio makes
+               the canvas scale to fit the viewport while keeping the desktop
+               proportions, centered (letterboxed) via absolute inset + margin. */
+            aspect-ratio: 1005 / 750 !important;
+            width: auto !important;
+            height: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
 
             position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
+            margin: auto !important;
 
             box-shadow: 0 20px 60px rgba(0,0,0,0.45);
         }
