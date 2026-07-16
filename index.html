@@ -277,7 +277,14 @@ config = {
     gui_debug : 3,
     cdn : "https://pygame-web.github.io/archives/0.7/",
     autorun : 0,
-    PYBUILD : "3.11"
+    PYBUILD : "3.11",
+    // itch.io appends a cache-busting "?v=<digits>" to the iframe URL, which
+    // pythons.js (v0.7.1, ~line 2065/2091) mis-parses as a python argv and turns
+    // into a bogus PYBUILD (e.g. "00884"), producing a python<garbage>/main.js
+    // URL that 404s so the interpreter never loads. Pin pydigits + executable
+    // explicitly so the corrupted PYBUILD can't derive the interpreter path.
+    pydigits : "311",
+    executable : "https://pygame-web.github.io/archives/0.7/python311/main.js"
 }
 
 </script>
